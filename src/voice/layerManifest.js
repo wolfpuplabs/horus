@@ -260,6 +260,12 @@ const layers = [
     noQuery: 'map markers; ask GDACS/EONET event cards instead',
   },
   {
+    id: 'hotspots',
+    aliases: ['fire hotspots', 'hotspots', 'karhutla', 'viirs fires'],
+    context: false,
+    noQuery: 'map overlay; no countable records',
+  },
+  {
     id: 'deforestation',
     aliases: [
       'deforestation',
@@ -554,6 +560,7 @@ const SELF_EVIDENT_IDS = new Set([
   'deforestation',
   'flora',
   'fauna',
+  'hotspots',
 ]);
 
 /**

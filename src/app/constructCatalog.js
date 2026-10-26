@@ -28,6 +28,7 @@ import { createApplicationAirQuality } from './layers/airQuality.js';
 import { createApplicationNaturalDisasters } from './layers/disasters.js';
 import {
   createFaunaHabitatLayer,
+  createFireHotspotsLayer,
   createFloraHabitatLayer,
   createForestLossLayer,
 } from '../layers/environment/index.js';
@@ -126,6 +127,7 @@ export function createApplicationCatalog({
         }),
         createApplicationNaturalDisasters(),
         createForestLossLayer(),
+        createFireHotspotsLayer(),
         createFloraHabitatLayer(),
         createFaunaHabitatLayer(),
         createApplicationEarthquakes({ source: sources.earthquakes }),

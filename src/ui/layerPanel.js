@@ -42,7 +42,7 @@ const PANEL_GROUPS = [
     label: msg('Environment'),
     ids: [
       'deforestation',
-      'local-firms',
+      'hotspots',
       'fire-perimeters',
       'disasters',
       'flora',
@@ -80,7 +80,7 @@ const PANEL_GROUPS = [
   },
   {
     label: msg('Events'),
-    ids: ['rocket-launches', 'gnss-integrity'],
+    ids: ['rocket-launches', 'local-firms', 'gnss-integrity'],
   },
   {
     label: msg('Weather'),

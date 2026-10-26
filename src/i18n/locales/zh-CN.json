@@ -2838,5 +2838,6 @@
   "Flora habitat (GBIF)": "植物栖息地（GBIF）",
   "Fauna habitat (GBIF)": "动物栖息地（GBIF）",
   "Environment": "环境",
-  "Mapped": "已绘制"
+  "Mapped": "已绘制",
+  "Fire hotspots (VIIRS)": "火点（VIIRS）"
 }

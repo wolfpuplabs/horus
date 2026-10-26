@@ -131,6 +131,7 @@ export class LayerBindings {
       'weather-lightning',
       'weather-cyclones',
       'deforestation',
+      'hotspots',
       'flora',
       'fauna',
     ]) {

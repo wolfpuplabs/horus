@@ -19,6 +19,8 @@ import { NO_IMAGERY_HOST } from '../../maps/imageryHost.js';
  * @param {number} [config.alpha]
  * @param {string} config.countLabel English label for the row's count.
  * @param {string} config.credit Credit drawn in the Cesium credit area.
+ * @param {(cesium: object) => object} [config.createProvider] Builds a
+ *   provider other than an XYZ template, such as a WMS service.
  */
 export function createTileOverlayLayer({
   id,
@@ -30,6 +32,7 @@ export function createTileOverlayLayer({
   alpha = 0.85,
   countLabel,
   credit,
+  createProvider = null,
   cesium = Cesium,
   eventTarget = globalThis,
 } = {}) {
@@ -65,11 +68,9 @@ export function createTileOverlayLayer({
     }
     detach();
     if (!host.collection) return;
-    const provider = new cesium.UrlTemplateImageryProvider({
-      url,
-      maximumLevel,
-      credit,
-    });
+    const provider = createProvider
+      ? createProvider(cesium)
+      : new cesium.UrlTemplateImageryProvider({ url, maximumLevel, credit });
     imageryLayer = new cesium.ImageryLayer(provider, { alpha });
     host.collection.add(imageryLayer);
     collection = host.collection;

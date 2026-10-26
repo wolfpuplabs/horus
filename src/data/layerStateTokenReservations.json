@@ -15,6 +15,7 @@
   ["flights", "f"],
   ["flora", "7"],
   ["gnss-integrity", "3"],
+  ["hotspots", "9"],
   ["local-dams", "q"],
   ["local-datacenters", "d"],
   ["local-firms", "w"],

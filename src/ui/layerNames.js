@@ -18,6 +18,7 @@ export const LAYER_NAME_KEYS = Object.freeze({
   earthquakes: msg('Earthquakes (24h)'),
   disasters: msg('Natural disasters'),
   deforestation: msg('Deforestation (2001–2025)'),
+  hotspots: msg('Fire hotspots (VIIRS)'),
   flora: msg('Flora habitat (GBIF)'),
   fauna: msg('Fauna habitat (GBIF)'),
   satellites: msg('Satellites'),

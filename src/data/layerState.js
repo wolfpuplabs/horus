@@ -635,6 +635,7 @@ export const LAYER_STATE_REGISTRY = Object.freeze([
     token: '3',
     disposition: 'enabled-only',
   }),
+  Object.freeze({ id: 'hotspots', token: '9', disposition: 'enabled-only' }),
   Object.freeze({ id: 'local-dams', token: 'q', disposition: 'enabled-only' }),
   Object.freeze({
     id: 'local-datacenters',
@@ -900,7 +901,11 @@ validateLayerStateRegistry();
 
 /** Produce the complete durable default state. */
 /** Layers a first visit (no share link, nothing saved) opens with. */
-export const STARTUP_LAYER_IDS = Object.freeze(['deforestation', 'disasters']);
+export const STARTUP_LAYER_IDS = Object.freeze([
+  'deforestation',
+  'disasters',
+  'hotspots',
+]);
 
 export function createDefaultLayerState() {
   return {

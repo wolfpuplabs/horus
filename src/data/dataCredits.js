@@ -167,6 +167,13 @@ export const DATA_CREDITS = [
       '(UMD/Google/USGS/NASA, CC BY 4.0)',
   },
   {
+    key: 'gibs-thermal-anomalies',
+    html:
+      'Fire hotspots: VIIRS 375 m thermal anomalies (NOAA-20, Suomi NPP) via ' +
+      '<a href="https://gibs.earthdata.nasa.gov" target="_blank" rel="noopener">NASA GIBS</a>; ' +
+      'active fire data courtesy of NASA FIRMS / LANCE',
+  },
+  {
     key: 'gbif',
     html:
       'Flora &amp; fauna habitat: occurrence density from ' +
