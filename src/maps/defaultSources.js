@@ -13,6 +13,7 @@ import { createWorldTerrain, createKeylessTerrain } from './terrain.js';
 /** Select sources and setup guidance without putting provider branches in the controller. */
 export function createDefaultMapSources({
   googleTileset = null,
+  createPhotorealTileset = null,
   cesiumToken = '',
   googleApiKey = '',
 } = {}) {
@@ -43,9 +44,12 @@ export function createDefaultMapSources({
       if (descriptor.kind === 'photoreal')
         return {
           ...common,
-          available: Boolean(googleTileset),
+          available: Boolean(googleTileset || createPhotorealTileset),
           unavailableReason: photorealUnavailableReason(hasIon || hasGoogle),
           tileset: googleTileset,
+          ...(!googleTileset && createPhotorealTileset
+            ? { createTileset: () => createPhotorealTileset() }
+            : {}),
         };
       const imagery =
         descriptor.kind === 'ion'

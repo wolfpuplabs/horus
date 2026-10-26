@@ -19,7 +19,6 @@
   "{label} · Detailed outline unavailable": "{label} · 无法获取详细轮廓",
   "Restoring shared view...": "正在恢复分享视图…",
   "Configuring viewer...": "正在配置视图…",
-  "Loading Google 3D Tiles...": "正在加载 Google 3D Tiles…",
   "Loading the keyless globe...": "正在加载免密钥地球…",
   "Google 3D Tiles unavailable ({detail}). Loading the keyless globe...": "Google 3D Tiles 不可用（{detail}）。正在加载免密钥地球…",
   "Initializing systems...": "正在初始化系统…",

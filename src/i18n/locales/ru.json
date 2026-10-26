@@ -2,7 +2,6 @@
   "Restoring shared view...": "Восстановление общего вида...",
   "Initializing systems...": "Инициализация систем...",
   "Configuring viewer...": "Настройка просмотрщика...",
-  "Loading Google 3D Tiles...": "Загрузка Google 3D Tiles...",
   "Loading the keyless globe...": "Загрузка глобуса без ключа...",
   "Google 3D Tiles unavailable ({detail}). Loading the keyless globe...": "Google 3D Tiles недоступны ({detail}). Загрузка глобуса без ключа...",
   "Close data attribution": "Закрыть атрибуцию данных",

@@ -25,6 +25,7 @@ export async function createApplicationScene({
   credits,
   MapController = MapStackController,
   mapOptions = {},
+  lazyPhotoreal = true,
   loaderStatus,
   signal,
   defer,
@@ -60,15 +61,16 @@ export async function createApplicationScene({
   defer(installTrackpadPinchZoom(viewer));
   registerDataCredits(viewer, credits);
   configureCreditKeyboardAccess(document);
-  loaderStatus.textContent =
-    googleApiKey || googleTokens || cesiumToken
-      ? t('Loading Google 3D Tiles...')
-      : t('Loading the keyless globe...');
-  const photoreal = await loadPhotorealisticTileset(Cesium, {
-    googleApiKey,
-    googleTokens,
-    cesiumToken,
-  });
+  const credentials = { googleApiKey, googleTokens, cesiumToken };
+  const hasPhotorealCredentials = Boolean(
+    googleApiKey || googleTokens || cesiumToken,
+  );
+  // Each Google 3D session spends provider quota, so the globe opens on the
+  // keyless map and the 3D tiles load only when someone picks the 3D map.
+  loaderStatus.textContent = t('Loading the keyless globe...');
+  const photoreal = lazyPhotoreal
+    ? { tileset: null, route: 'deferred', errors: [] }
+    : await loadPhotorealisticTileset(Cesium, credentials);
   const tileset = photoreal.tileset;
   // A provider can finish after cancellation; retain ownership of its result.
   defer(() => {
@@ -107,6 +109,17 @@ export async function createApplicationScene({
     requestRender: governorRequestRender,
     ...mapOptions,
     googleTileset: tileset,
+    ...(lazyPhotoreal && hasPhotorealCredentials
+      ? {
+          createPhotorealTileset: async () => {
+            const loaded = await loadPhotorealisticTileset(Cesium, credentials);
+            if (!loaded.tileset)
+              throw loaded.errors.at(-1) || new Error('Google 3D unavailable');
+            console.info(`[Map] Google 3D Tiles loaded via ${loaded.route}.`);
+            return loaded.tileset;
+          },
+        }
+      : {}),
     cesiumToken,
     initialStack: tileset ? 'photoreal' : 'esri-imagery',
     // Task 5 (height-datum fix): rebroadcast stack changes as a window
