@@ -44,6 +44,8 @@ export function restoreApiUrl(rawUrl) {
   // Vercel also appends the rewrite's named segment (`path`) to the query;
   // routes with an exact query allowlist (weather) reject it as unknown.
   url.searchParams.delete('path');
+  // Vercel's share links add their token to every request on the page.
+  url.searchParams.delete('_vercel_share');
   const search = url.searchParams.toString();
   return `/api/${forwarded.replace(/^\/+/, '')}${search ? `?${search}` : ''}`;
 }

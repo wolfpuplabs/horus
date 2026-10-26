@@ -13,7 +13,7 @@ test('the rewrite restores /api paths and refuses climbing out of /api', () => {
   assert.equal(restoreApiUrl('/api/disasters'), '/api/disasters');
   assert.equal(
     restoreApiUrl(
-      '/api/gev?__gevpath=weather/manifest&product=radar&path=weather/manifest',
+      '/api/gev?__gevpath=weather/manifest&product=radar&_vercel_share=t&path=weather/manifest',
     ),
     '/api/weather/manifest?product=radar',
   );
