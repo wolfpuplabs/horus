@@ -28,10 +28,24 @@
       "likelihood": 2,
       "impact": 2,
       "mitigation": "Server-side disk cache; one upstream read per cache window."
+    },
+    {
+      "id": "firms-unreachable-from-vercel",
+      "title": "NASA FIRMS does not answer requests from Vercel (timeouts in production logs)",
+      "likelihood": 5,
+      "impact": 4,
+      "blocking": true,
+      "mitigation": "Replaced by GIBS hotspots (gibs-hotspots). Re-open only on a host that reaches FIRMS."
     }
   ],
   "evidence": [
-    { "kind": "problem-statement", "ref": "docs/PRD.md" },
-    { "kind": "roi-estimate", "ref": "jev/initiatives/firms-key.json" }
+    {
+      "kind": "problem-statement",
+      "ref": "docs/PRD.md"
+    },
+    {
+      "kind": "roi-estimate",
+      "ref": "jev/initiatives/firms-key.json"
+    }
   ]
 }

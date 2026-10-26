@@ -1,0 +1,77 @@
+{
+  "id": "gibs-hotspots",
+  "title": "Fire hotspots from NASA GIBS (VIIRS 375 m)",
+  "owner": "wolfpuplabs",
+  "stage": "release",
+  "summary": "Latest-day active fires drawn by NASA GIBS and loaded by the browser: keyless, zero function time.",
+  "costs": {
+    "buildHours": 3,
+    "infraUsdPerMonth": 0,
+    "maintenanceHoursPerMonth": 0.25
+  },
+  "outcomes": [
+    {
+      "id": "fire-hotspots-reviewed",
+      "metric": "Fire hotspots a partner reviews within 24 h",
+      "unit": "hotspot",
+      "quantityPerYear": 300,
+      "proxyValuePerUnit": 10,
+      "confidence": 0.4,
+      "attribution": 0.5,
+      "deadweight": 0.5,
+      "$comment": "ASSUMPTION, same proxy as firms-key."
+    },
+    {
+      "id": "function-time-avoided",
+      "metric": "Failed FIRMS function runs avoided",
+      "unit": "USD",
+      "quantityPerYear": 120,
+      "proxyValuePerUnit": 1,
+      "confidence": 0.6,
+      "attribution": 1,
+      "deadweight": 0
+    }
+  ],
+  "risks": [
+    {
+      "id": "no-click-detail",
+      "title": "Image overlay: hotspots cannot be clicked for brightness or confidence",
+      "likelihood": 5,
+      "impact": 1,
+      "mitigation": "Disaster layer carries event-level fire cards; FIRMS detail stays a separate initiative."
+    },
+    {
+      "id": "gibs-wms-format",
+      "title": "GIBS serves fires as vector data; the WMS rendering path may change",
+      "likelihood": 2,
+      "impact": 3,
+      "mitigation": "Layer row reports errors; deforestation and disasters stay independent."
+    }
+  ],
+  "evidence": [
+    {
+      "kind": "problem-statement",
+      "ref": "docs/PRD.md"
+    },
+    {
+      "kind": "roi-estimate",
+      "ref": "jev/initiatives/gibs-hotspots.json"
+    },
+    {
+      "kind": "prd",
+      "ref": "docs/PRD.md"
+    },
+    {
+      "kind": "tests",
+      "ref": "src/data/layerState.test.mjs"
+    },
+    {
+      "kind": "security-audit",
+      "ref": "docs/SECURITY-AUDIT.md"
+    },
+    {
+      "kind": "rollback-plan",
+      "ref": "docs/SDLC.md"
+    }
+  ]
+}

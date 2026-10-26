@@ -52,6 +52,12 @@ group leads the layer panel:
 - **🌿 Flora / 🐾 Fauna habitat:** where plants and animals have been recorded, as GBIF occurrence density.
 - **🔥 Fires:** NASA FIRMS active fires (free `FIRMS_MAP_KEY`) and fire perimeters, plus earthquakes and air quality.
 
+- **🎯 JEV priority:** current disasters ranked by hazard, nearby biodiversity and forest loss, with the reasons on each card.
+
+Product and process docs: [PRD](docs/PRD.md) · [SDLC](docs/SDLC.md) ·
+[JEV decision gate](docs/JEV.md) · [decisions](docs/jev/DECISIONS.md) ·
+[security audit](docs/SECURITY-AUDIT.md).
+
 All of these are keyless except FIRMS. Flights, ships, satellites, cameras and
 the other layers are still there, further down the panel and off by default.
 

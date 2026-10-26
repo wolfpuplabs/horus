@@ -1,0 +1,60 @@
+{
+  "id": "lazy-google-3d",
+  "title": "Load Google 3D tiles only when chosen",
+  "owner": "wolfpuplabs",
+  "stage": "release",
+  "summary": "Keep the free Esri map as default so page loads do not spend Cesium ion's 1,000 monthly Google 3D sessions.",
+  "costs": {
+    "buildHours": 2,
+    "infraUsdPerMonth": 0,
+    "maintenanceHoursPerMonth": 0
+  },
+  "outcomes": [
+    {
+      "id": "paid-plan-avoided",
+      "metric": "Months a paid Cesium plan is not needed",
+      "unit": "month",
+      "quantityPerYear": 12,
+      "proxyValuePerUnit": 20,
+      "confidence": 0.5,
+      "attribution": 0.8,
+      "deadweight": 0.2,
+      "$comment": "ASSUMPTION: without lazy load the free quota runs out at ~33 visits/day."
+    }
+  ],
+  "risks": [
+    {
+      "id": "shared-3d-links",
+      "title": "A share link saved in 3D mode spends a session on open",
+      "likelihood": 3,
+      "impact": 1,
+      "mitigation": "Intended: the sharer chose 3D."
+    }
+  ],
+  "evidence": [
+    {
+      "kind": "problem-statement",
+      "ref": "docs/PRD.md"
+    },
+    {
+      "kind": "roi-estimate",
+      "ref": "jev/initiatives/lazy-google-3d.json"
+    },
+    {
+      "kind": "prd",
+      "ref": "docs/PRD.md"
+    },
+    {
+      "kind": "tests",
+      "ref": "src/maps/controller.test.mjs"
+    },
+    {
+      "kind": "security-audit",
+      "ref": "docs/SECURITY-AUDIT.md"
+    },
+    {
+      "kind": "rollback-plan",
+      "ref": "docs/SDLC.md"
+    }
+  ]
+}

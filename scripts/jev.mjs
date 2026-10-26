@@ -6,7 +6,13 @@
 //   npm run jev:check       CI gate: fail when an initiative in a blocking
 //                           stage (build, release, operate) is NO-GO, or when
 //                           docs/jev/DECISIONS.md is out of date.
-import { existsSync, readFileSync, readdirSync, writeFileSync } from 'node:fs';
+import {
+  existsSync,
+  mkdirSync,
+  readFileSync,
+  readdirSync,
+  writeFileSync,
+} from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import {
@@ -100,6 +106,7 @@ function main(argv) {
           : ''),
     );
   if (argv.includes('--write')) {
+    mkdirSync(path.dirname(REPORT), { recursive: true });
     writeFileSync(REPORT, report);
     console.log(`\nWrote ${path.relative(ROOT, REPORT)}`);
   }

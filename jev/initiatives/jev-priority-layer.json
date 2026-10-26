@@ -2,7 +2,7 @@
   "id": "jev-priority-layer",
   "title": "JEV priority layer: rank disasters by hazard x biodiversity x forest pressure",
   "owner": "wolfpuplabs",
-  "stage": "build",
+  "stage": "release",
   "summary": "Tell a partner which current disasters to look at first, instead of 400 equal markers.",
   "costs": {
     "buildHours": 16,
@@ -30,15 +30,46 @@
       "likelihood": 3,
       "impact": 3,
       "mitigation": "Card shows the three factors and says 'heuristic'; weights live in jev/priority.json."
+    },
+    {
+      "id": "gbif-lookup-load",
+      "title": "Per-event GBIF count lookups slow the function or hit GBIF limits",
+      "likelihood": 2,
+      "impact": 2,
+      "mitigation": "Max 60 events, 6 concurrent, 8 s timeout, 24 h lookup cache, 30 min result cache."
     }
   ],
   "evidence": [
-    { "kind": "problem-statement", "ref": "docs/PRD.md" },
+    {
+      "kind": "problem-statement",
+      "ref": "docs/PRD.md"
+    },
     {
       "kind": "roi-estimate",
       "ref": "jev/initiatives/jev-priority-layer.json"
     },
-    { "kind": "prd", "ref": "docs/PRD.md" },
-    { "kind": "test-plan", "ref": "docs/SDLC.md" }
+    {
+      "kind": "prd",
+      "ref": "docs/PRD.md"
+    },
+    {
+      "kind": "test-plan",
+      "ref": "docs/SDLC.md"
+    },
+    {
+      "kind": "tests",
+      "ref": "src/jev/priority.test.mjs"
+    },
+    {
+      "kind": "security-audit",
+      "ref": "docs/SECURITY-AUDIT.md"
+    },
+    {
+      "kind": "rollback-plan",
+      "ref": "docs/SDLC.md"
+    }
+  ],
+  "conditions": [
+    "Review weights with at least one partner before month 3; record the agreed weights in src/jev/priority.js."
   ]
 }
