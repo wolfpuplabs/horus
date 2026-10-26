@@ -84,11 +84,11 @@ wajib diganti dengan data mitra.
 `skor = 100 × (0,5·bahaya + 0,25·biodiversitas + 0,25·tekanan hutan)`
 
 - **Bahaya**: level GDACS merah 1,0 · oranye 0,65 · hijau/tanpa level 0,35.
-- **Biodiversitas**: `log10(n+1)/log10(10.001)`, n = catatan GBIF dalam ±50 km.
+- **Biodiversitas**: `log10(n+1)/log10(100.001)`, n = catatan GBIF dalam ±50 km.
 - **Tekanan hutan**: porsi area tile GFC (zoom 9, ±78 km) yang kehilangan pohon
   sejak 2001, jenuh di 25%.
-- Faktor yang gagal diukur dikeluarkan dan bobot dinormalisasi ulang; kartu
-  menandai "skor parsial".
+- Faktor yang gagal diukur bernilai netral 0,5; kartu menandai "skor
+  parsial".
 - Tier: ≥70 **Critical**, ≥45 **High**, lainnya **Watch**.
 - Cakupan: area `PRIORITY_AREA` (default 90–145°BT, 15°LS–25°LU), maks. 60
   kejadian, cache 30 menit.

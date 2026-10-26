@@ -17,7 +17,7 @@ const DEFAULT_AREA = Object.freeze({
   north: 25,
 });
 const MAX_EVENTS = 60;
-const LOOKUP_CONCURRENCY = 6;
+const LOOKUP_CONCURRENCY = 3;
 const LOOKUP_TIMEOUT_MS = 8_000;
 const RESULT_CACHE_MS = 30 * 60_000;
 /** Occurrences and forest loss change slowly; lookups keep for a day. */

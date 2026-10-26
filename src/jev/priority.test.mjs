@@ -15,7 +15,7 @@ import {
 
 test('factors are bounded and unknowns stay unknown', () => {
   assert.equal(biodiversityFactor(0), 0);
-  assert.equal(biodiversityFactor(10_000), 1);
+  assert.equal(biodiversityFactor(100_000), 1);
   assert.equal(biodiversityFactor(1e9), 1);
   assert.equal(biodiversityFactor(null), null);
   assert.equal(forestFactor(0.125), 0.5);
@@ -26,7 +26,7 @@ test('factors are bounded and unknowns stay unknown', () => {
 test('a red alert in a deforested, species-rich place outranks a quiet one', () => {
   const hot = scoreEvent({
     alert: 'red',
-    occurrenceCount: 10_000,
+    occurrenceCount: 100_000,
     forestLossShare: 0.3,
   });
   assert.equal(hot.score, 100);
@@ -50,13 +50,13 @@ test('a red alert in a deforested, species-rich place outranks a quiet one', () 
   );
 });
 
-test('a missing factor renormalizes the weights and marks the score partial', () => {
+test('a missing factor counts as neutral and marks the score partial', () => {
   const partial = scoreEvent({
     alert: 'red',
     occurrenceCount: null,
     forestLossShare: null,
   });
-  assert.equal(partial.score, 100);
+  assert.equal(partial.score, 75);
   assert.equal(partial.confidence, 'partial');
 });
 

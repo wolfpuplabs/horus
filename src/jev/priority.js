@@ -28,7 +28,9 @@ const HAZARD_BY_ALERT = Object.freeze({ red: 1, orange: 0.65, green: 0.35 });
 /** Events without an alert level (EONET) start as a green alert. */
 const HAZARD_UNRATED = 0.35;
 /** Occurrence count that saturates the biodiversity factor. */
-const BIODIVERSITY_SATURATION = 10_000;
+const BIODIVERSITY_SATURATION = 100_000;
+/** Value an unmeasured factor counts as. */
+const NEUTRAL_FACTOR = 0.5;
 /** Loss share that saturates the forest factor (a quarter of the area). */
 const FOREST_SATURATION = 0.25;
 
@@ -60,9 +62,9 @@ export function tierFor(score) {
 }
 
 /**
- * Score one event. A factor that could not be measured is left out and the
- * remaining weights are renormalized, so a missing feed lowers confidence
- * (reported) rather than the score itself.
+ * Score one event. A factor that could not be measured counts as neutral
+ * (0.5) and the score is marked partial: renormalizing the other weights
+ * instead lifted unmeasured events above measured ones.
  */
 export function scoreEvent(
   { alert, occurrenceCount, forestLossShare },
@@ -76,11 +78,10 @@ export function scoreEvent(
   let weighted = 0;
   let total = 0;
   for (const [name, value] of Object.entries(factors)) {
-    if (value === null) continue;
-    weighted += weights[name] * value;
+    weighted += weights[name] * (value ?? NEUTRAL_FACTOR);
     total += weights[name];
   }
-  const score = total > 0 ? Math.round((100 * weighted) / total) : 0;
+  const score = Math.round((100 * weighted) / total);
   const measured = Object.values(factors).filter((v) => v !== null).length;
   return {
     score,
