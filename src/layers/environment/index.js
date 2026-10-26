@@ -24,7 +24,7 @@ export function createForestLossLayer(options = {}) {
     url: FOREST_LOSS_TILES,
     maximumLevel: 12,
     alpha: 0.85,
-    countLabel: msg('Tree cover loss'),
+    countLabel: msg('Mapped'),
     credit: 'Hansen/UMD/Google/USGS/NASA Global Forest Change (CC BY 4.0)',
     ...options,
   });
@@ -40,7 +40,7 @@ export function createFloraHabitatLayer(options = {}) {
     url: '/api/gbif-tiles/flora/{z}/{x}/{y}.png',
     maximumLevel: 14,
     alpha: 0.75,
-    countLabel: msg('Plant records'),
+    countLabel: msg('Mapped'),
     credit: 'GBIF.org occurrence data (CC BY 4.0)',
     ...options,
   });
@@ -56,7 +56,7 @@ export function createFaunaHabitatLayer(options = {}) {
     url: '/api/gbif-tiles/fauna/{z}/{x}/{y}.png',
     maximumLevel: 14,
     alpha: 0.75,
-    countLabel: msg('Animal records'),
+    countLabel: msg('Mapped'),
     credit: 'GBIF.org occurrence data (CC BY 4.0)',
     ...options,
   });

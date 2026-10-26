@@ -2965,14 +2965,12 @@
   "Report ↗ · click card to open": "Informe ↗ · haz clic en la tarjeta para abrirlo",
   "Disaster feeds unavailable": "Fuentes de desastres no disponibles",
   "Current events from GDACS and NASA EONET. Larger markers are higher GDACS alerts.": "Eventos actuales de GDACS y NASA EONET. Los marcadores más grandes indican alertas GDACS más altas.",
-  "Tree cover loss": "Pérdida de cobertura arbórea",
-  "Plant records": "Registros de plantas",
-  "Animal records": "Registros de animales",
   "Flying to Indonesia...": "Volando a Indonesia...",
   "Deforestation, floods, fires and other disasters, live": "Deforestación, inundaciones, incendios y otros desastres, en vivo",
   "Natural disasters": "Desastres naturales",
   "Deforestation (2001–2025)": "Deforestación (2001–2025)",
   "Flora habitat (GBIF)": "Hábitat de flora (GBIF)",
   "Fauna habitat (GBIF)": "Hábitat de fauna (GBIF)",
-  "Environment": "Medio ambiente"
+  "Environment": "Medio ambiente",
+  "Mapped": "Mapeado"
 }

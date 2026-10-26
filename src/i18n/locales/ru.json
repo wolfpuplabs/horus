@@ -3032,14 +3032,12 @@
   "Report ↗ · click card to open": "Отчёт ↗ · нажмите на карточку, чтобы открыть",
   "Disaster feeds unavailable": "Источники о бедствиях недоступны",
   "Current events from GDACS and NASA EONET. Larger markers are higher GDACS alerts.": "Текущие события из GDACS и NASA EONET. Крупные маркеры означают более высокий уровень тревоги GDACS.",
-  "Tree cover loss": "Потеря лесного покрова",
-  "Plant records": "Находки растений",
-  "Animal records": "Находки животных",
   "Flying to Indonesia...": "Перелёт в Индонезию...",
   "Deforestation, floods, fires and other disasters, live": "Вырубка лесов, наводнения, пожары и другие бедствия в реальном времени",
   "Natural disasters": "Стихийные бедствия",
   "Deforestation (2001–2025)": "Вырубка лесов (2001–2025)",
   "Flora habitat (GBIF)": "Ареалы флоры (GBIF)",
   "Fauna habitat (GBIF)": "Ареалы фауны (GBIF)",
-  "Environment": "Окружающая среда"
+  "Environment": "Окружающая среда",
+  "Mapped": "На карте"
 }

@@ -2831,14 +2831,12 @@
   "Report ↗ · click card to open": "报告 ↗ · 点击卡片打开",
   "Disaster feeds unavailable": "灾害数据源不可用",
   "Current events from GDACS and NASA EONET. Larger markers are higher GDACS alerts.": "来自 GDACS 和 NASA EONET 的当前事件。标记越大，GDACS 警报级别越高。",
-  "Tree cover loss": "树木覆盖损失",
-  "Plant records": "植物记录",
-  "Animal records": "动物记录",
   "Flying to Indonesia...": "正在飞往印度尼西亚...",
   "Deforestation, floods, fires and other disasters, live": "实时森林砍伐、洪水、火灾及其他灾害",
   "Natural disasters": "自然灾害",
   "Deforestation (2001–2025)": "森林砍伐（2001–2025）",
   "Flora habitat (GBIF)": "植物栖息地（GBIF）",
   "Fauna habitat (GBIF)": "动物栖息地（GBIF）",
-  "Environment": "环境"
+  "Environment": "环境",
+  "Mapped": "已绘制"
 }
