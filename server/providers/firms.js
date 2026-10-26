@@ -27,6 +27,32 @@ import { readResponseTextCapped } from './common/http.js';
  *
  * @returns {import('vite').Plugin}
  */
+/**
+ * The FIRMS area to read: `world`, or `west,south,east,north` in degrees from
+ * FIRMS_AREA. A region is far smaller than the world pull, which matters on a
+ * serverless host with a time limit. Anything unreadable falls back to world.
+ * @param {string|undefined} value
+ * @returns {string}
+ */
+export function firmsArea(value) {
+  const parts = String(value || '')
+    .split(',')
+    .map((part) => Number(part.trim()));
+  if (parts.length !== 4 || parts.some((part) => !Number.isFinite(part)))
+    return 'world';
+  const [west, south, east, north] = parts;
+  if (
+    west < -180 ||
+    east > 180 ||
+    south < -90 ||
+    north > 90 ||
+    west >= east ||
+    south >= north
+  )
+    return 'world';
+  return parts.join(',');
+}
+
 export function firmsProxy() {
   const TTL_MS = 30 * 60_000;
   const STATUS_TTL_MS = 5 * 60_000;
@@ -89,8 +115,8 @@ export function firmsProxy() {
    * it embeds the MAP_KEY.
    */
   async function fetchSource(key, source) {
-    const url = `https://firms.modaps.eosdis.nasa.gov/api/area/csv/${encodeURIComponent(key)}/${source}/world/2`;
-    const signal = AbortSignal.timeout(60_000);
+    const url = `https://firms.modaps.eosdis.nasa.gov/api/area/csv/${encodeURIComponent(key)}/${source}/${firmsArea(process.env.FIRMS_AREA)}/2`;
+    const signal = AbortSignal.timeout(120_000);
     const res = await fetch(url, { signal });
     if (!res.ok) throw new Error(`HTTP ${res.status}`);
     const records = parseFirmsCsv(
