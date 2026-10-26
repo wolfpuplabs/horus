@@ -41,6 +41,8 @@ const ALERT_LABELS = Object.freeze({
 });
 
 const PIXEL_SIZE = Object.freeze({ red: 18, orange: 14, green: 10 });
+/** Within this camera distance markers ignore terrain depth. */
+const NEAR_ON_TOP_METRES = 2_000_000;
 
 /** The source the layer reads by default: this app's merged proxy. */
 export function createDisasterSource({
@@ -208,7 +210,9 @@ export function createNaturalDisastersLayer({
         outlineColor: Cesium.Color.WHITE.withAlpha(0.85),
         outlineWidth: row.alert === 'red' ? 3 : 1.5,
         heightReference: Cesium.HeightReference.CLAMP_TO_GROUND,
-        disableDepthTestDistance: Number.POSITIVE_INFINITY,
+        // Stay on top of nearby terrain, but let the globe hide markers on
+        // its far side: an infinite distance drew the Americas through Asia.
+        disableDepthTestDistance: NEAR_ON_TOP_METRES,
         scaleByDistance: new Cesium.NearFarScalar(2e5, 1.4, 2e7, 0.8),
       },
       properties: {
