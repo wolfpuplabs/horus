@@ -8,6 +8,7 @@ import {
   readResponseJsonCapped,
 } from './common/http.js';
 import { clientKey, makeRateLimiter } from './common/rate-limit.js';
+import { admitSameSiteKeyless } from './common/same-site.js';
 
 // Keyless environmental feeds for the Horus environment layers:
 //   /api/disasters   GDACS + NASA EONET current natural disasters, merged.
@@ -46,6 +47,8 @@ export const GBIF_GROUPS = Object.freeze({
   fauna: Object.freeze({ taxonKey: 1, style: 'purpleYellow.poly' }),
 });
 const GBIF_MAX_ZOOM = 14;
+const GBIF_TILES_PER_MINUTE = 600;
+const MAX_TILES_IN_FLIGHT = 32;
 const MAX_TILE_BYTES = 2 * 1024 * 1024;
 const TILE_TIMEOUT_MS = 10_000;
 // GBIF answers 204 for a tile with no records; Cesium needs an image.
@@ -145,10 +148,8 @@ export function disastersProxy({
     } catch (error) {
       if (cached && now() - cached.generatedAt < DISASTER_STALE_MS)
         return json(200, cached, { 'X-Data-Stale': 'true' });
-      return json(502, {
-        error: 'Natural disaster feeds unavailable',
-        detail: String(error?.message || error),
-      });
+      console.warn('[disasters] feeds unavailable:', error?.message || error);
+      return json(502, { error: 'Natural disaster feeds unavailable' });
     }
   }
 
@@ -194,8 +195,16 @@ export function gbifTileUrl({ group, z, x, y }) {
 /** Same-origin GBIF tiles, so the CDN can cache them and WebGL can read them. */
 export function gbifTilesProxy({
   fetchImpl = (...args) => globalThis.fetch(...args),
+  admit = admitSameSiteKeyless,
 } = {}) {
   const inFlight = new Map();
+  // A map view loads a few dozen tiles and panning loads more; the per-client
+  // cap only stops a scraper walking the tile pyramid through this proxy.
+  const allow = makeRateLimiter({
+    windowMs: 60_000,
+    max: GBIF_TILES_PER_MINUTE,
+    globalMax: GBIF_TILES_PER_MINUTE * 20,
+  });
 
   async function handler(req, res) {
     const send = (status, body, type, cache) => {
@@ -205,6 +214,10 @@ export function gbifTilesProxy({
     };
     if (req.method !== 'GET')
       return send(405, 'method_not_allowed', 'text/plain', 'no-store');
+    // Hotlinking from another site would spend this deployment's functions.
+    if (admit(req, res)) return undefined;
+    if (inFlight.size >= MAX_TILES_IN_FLIGHT || !allow(clientKey(req)))
+      return send(429, 'rate_limited', 'text/plain', 'no-store');
     const tile = parseGbifTilePath((req.url || '/').split('?')[0]);
     if (!tile) return send(404, 'unknown_tile', 'text/plain', 'no-store');
     const url = gbifTileUrl(tile);

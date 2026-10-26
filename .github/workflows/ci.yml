@@ -3,7 +3,7 @@ name: CI
 on:
   pull_request:
   push:
-    branches: [main]
+    branches: [main, master]
 
 permissions:
   contents: read
@@ -49,9 +49,12 @@ jobs:
       - name: Check package boundaries
         run: npm run check:boundaries
 
+      - name: JEV go/no-go gate (social ROI, risk, evidence)
+        run: npm run jev:check
+
       - name: Check published layer-token allocations
         if: github.event_name == 'pull_request'
-        run: npm run layer-token:check -- --base-ref origin/main
+        run: npm run layer-token:check -- --base-ref origin/${{ github.base_ref }}
 
       - name: Run unit tests
         run: npm test
