@@ -2588,7 +2588,9 @@
       "src/layers/environment/index.js",
       "src/layers/disasters/records.js",
       "src/layers/disasters/index.js",
-      "src/app/layers/disasters.js"
+      "src/app/layers/disasters.js",
+      "src/layers/priority/index.js",
+      "src/jev/priority.js"
     ],
     "external": [
       "hls.js",
@@ -3159,7 +3161,12 @@
       "src/ui/layerNames.js",
       "src/layers/streetLevel/providers/mapillary/policy.js",
       "src/layers/environment/tileOverlay.js",
-      "src/layers/environment/index.js"
+      "src/layers/environment/index.js",
+      "src/app/layers/disasters.js",
+      "src/layers/disasters/index.js",
+      "src/layers/disasters/records.js",
+      "src/layers/priority/index.js",
+      "src/jev/priority.js"
     ],
     "external": [
       "hls.js",

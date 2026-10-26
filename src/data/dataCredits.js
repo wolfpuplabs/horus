@@ -174,6 +174,13 @@ export const DATA_CREDITS = [
       'active fire data courtesy of NASA FIRMS / LANCE',
   },
   {
+    key: 'jev-priority',
+    html:
+      'JEV priority: Horus heuristic combining GDACS alert levels, GBIF.org ' +
+      'occurrence counts and Global Forest Change tree-cover loss; ' +
+      'not an official priority',
+  },
+  {
     key: 'gbif',
     html:
       'Flora &amp; fauna habitat: occurrence density from ' +

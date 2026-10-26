@@ -44,6 +44,7 @@ const PANEL_GROUPS = [
       'deforestation',
       'hotspots',
       'fire-perimeters',
+      'priority',
       'disasters',
       'flora',
       'fauna',

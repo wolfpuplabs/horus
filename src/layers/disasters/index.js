@@ -95,7 +95,39 @@ export function buildDisasterCard(row, nowMs = Date.now()) {
   };
 }
 
-/** Own the disaster markers, their refresh, and click selection. */
+function disasterMarker(row) {
+  const style = DISASTER_STYLES[row.kind] || DISASTER_STYLES.other;
+  return {
+    color: style.color,
+    size: PIXEL_SIZE[row.alert] || 11,
+    outlineWidth: row.alert === 'red' ? 3 : 1.5,
+  };
+}
+
+function disasterLegend(rows) {
+  const counts = new Map();
+  for (const row of rows) counts.set(row.kind, (counts.get(row.kind) || 0) + 1);
+  return DISASTER_KINDS.filter((kind) => counts.get(kind)).map(
+    (kind, index) => ({
+      label: t(DISASTER_STYLES[kind].label),
+      color: DISASTER_STYLES[kind].color,
+      count: counts.get(kind),
+      ...(index === 0
+        ? {
+            blurb: t(
+              'Current events from GDACS and NASA EONET. Larger markers are higher GDACS alerts.',
+            ),
+          }
+        : {}),
+    }),
+  );
+}
+
+/**
+ * Own event markers, their refresh, and click selection. The defaults are
+ * the natural-disasters layer; the JEV priority layer reuses it with its own
+ * id, source, markers, card and legend.
+ */
 export function createNaturalDisastersLayer({
   source = createDisasterSource(),
   overlayHost = null,
@@ -103,6 +135,17 @@ export function createNaturalDisastersLayer({
   picking = null,
   pointer = null,
   openExternal = null,
+  id = 'disasters',
+  name = 'Natural disasters',
+  icon = '🌊',
+  sourceLabel = 'GDACS · NASA EONET',
+  updateInterval = 600_000,
+  overlaySourceId = DISASTER_OVERLAY_SOURCE_ID,
+  pickPrefix = PICK_PREFIX,
+  cardPrefix = 'disaster-card:',
+  markerFor = disasterMarker,
+  buildCard = buildDisasterCard,
+  legendFor = disasterLegend,
 } = {}) {
   if (typeof source?.getSnapshot !== 'function')
     throw new TypeError('Natural disasters require a snapshot source');
@@ -124,11 +167,11 @@ export function createNaturalDisastersLayer({
     const row = selectedId ? rowsById.get(selectedId) : null;
     if (!row) {
       selectedId = null;
-      overlayHost.setEntries(DISASTER_OVERLAY_SOURCE_ID, [], CARD_HOST_OPTIONS);
+      overlayHost.setEntries(overlaySourceId, [], CARD_HOST_OPTIONS);
       return;
     }
     const card = {
-      ...buildDisasterCard(row),
+      ...buildCard(row),
       position: Cesium.Cartesian3.fromDegrees(row.lon, row.lat),
     };
     if (!openExternal) card.interactive = false;
@@ -137,19 +180,16 @@ export function createNaturalDisastersLayer({
         openExternal(row.url);
         return true;
       };
-    overlayHost.setEntries(
-      DISASTER_OVERLAY_SOURCE_ID,
-      [card],
-      CARD_HOST_OPTIONS,
-    );
+    overlayHost.setEntries(overlaySourceId, [card], CARD_HOST_OPTIONS);
   }
 
   const pickedRowId = (picked) => {
-    const id = picking?.resolvePickId
+    const pickId = picking?.resolvePickId
       ? picking.resolvePickId(picked)
       : picked?.id?.id;
-    if (typeof id !== 'string' || !id.startsWith(PICK_PREFIX)) return null;
-    const rowId = id.slice(PICK_PREFIX.length);
+    if (typeof pickId !== 'string' || !pickId.startsWith(pickPrefix))
+      return null;
+    const rowId = pickId.slice(pickPrefix.length);
     return rowsById.has(rowId) ? rowId : null;
   };
 
@@ -161,10 +201,10 @@ export function createNaturalDisastersLayer({
       const cardHit = overlayHost.hitTest?.(
         click.position?.x,
         click.position?.y,
-        { sourceId: DISASTER_OVERLAY_SOURCE_ID },
+        { sourceId: overlaySourceId },
       );
       const selected = selectedId ? rowsById.get(selectedId) : null;
-      if (cardHit && cardHit.entryId === `disaster-card:${selectedId}`) {
+      if (cardHit && cardHit.entryId === `${cardPrefix}${selectedId}`) {
         if (selected?.url && openExternal) openExternal(selected.url);
         return;
       }
@@ -193,22 +233,21 @@ export function createNaturalDisastersLayer({
 
   function clearSelection() {
     selectedId = null;
-    overlayHost?.clearSource(DISASTER_OVERLAY_SOURCE_ID);
-    overlayHost?.setVisible?.(DISASTER_OVERLAY_SOURCE_ID, false);
+    overlayHost?.clearSource(overlaySourceId);
+    overlayHost?.setVisible?.(overlaySourceId, false);
   }
 
   function entityFor(row) {
-    const style = DISASTER_STYLES[row.kind] || DISASTER_STYLES.other;
-    const color = Cesium.Color.fromCssColorString(style.color);
-    const size = PIXEL_SIZE[row.alert] || 11;
+    const marker = markerFor(row);
+    const color = Cesium.Color.fromCssColorString(marker.color);
     return new Cesium.Entity({
-      id: `${PICK_PREFIX}${row.id}`,
+      id: `${pickPrefix}${row.id}`,
       position: Cesium.Cartesian3.fromDegrees(row.lon, row.lat),
       point: {
-        pixelSize: size,
+        pixelSize: marker.size,
         color: color.withAlpha(0.9),
         outlineColor: Cesium.Color.WHITE.withAlpha(0.85),
-        outlineWidth: row.alert === 'red' ? 3 : 1.5,
+        outlineWidth: marker.outlineWidth,
         heightReference: Cesium.HeightReference.CLAMP_TO_GROUND,
         // Stay on top of nearby terrain, but let the globe hide markers on
         // its far side: an infinite distance drew the Americas through Asia.
@@ -225,16 +264,16 @@ export function createNaturalDisastersLayer({
   }
 
   const layer = {
-    id: 'disasters',
-    name: 'Natural disasters',
-    icon: '🌊',
-    source: 'GDACS · NASA EONET',
-    updateInterval: 600_000,
+    id,
+    name,
+    icon,
+    source: sourceLabel,
+    updateInterval,
 
     init(nextViewer) {
-      if (viewer) throw new Error('Natural disasters already initialized');
+      if (viewer) throw new Error(`${name} already initialized`);
       viewer = nextViewer;
-      dataSource = new Cesium.CustomDataSource('disasters');
+      dataSource = new Cesium.CustomDataSource(id);
       dataSource.show = false;
       viewer.dataSources.add(dataSource);
     },
@@ -242,7 +281,7 @@ export function createNaturalDisastersLayer({
     enable() {
       enabled = true;
       if (dataSource) dataSource.show = true;
-      overlayHost?.setVisible?.(DISASTER_OVERLAY_SOURCE_ID, true);
+      overlayHost?.setVisible?.(overlaySourceId, true);
       installClickHandler();
     },
 
@@ -304,26 +343,7 @@ export function createNaturalDisastersLayer({
     },
 
     getRowControls() {
-      const counts = new Map();
-      for (const row of rowsById.values())
-        counts.set(row.kind, (counts.get(row.kind) || 0) + 1);
-      return {
-        chips: [],
-        legend: DISASTER_KINDS.filter((kind) => counts.get(kind)).map(
-          (kind, index) => ({
-            label: t(DISASTER_STYLES[kind].label),
-            color: DISASTER_STYLES[kind].color,
-            count: counts.get(kind),
-            ...(index === 0
-              ? {
-                  blurb: t(
-                    'Current events from GDACS and NASA EONET. Larger markers are higher GDACS alerts.',
-                  ),
-                }
-              : {}),
-          }),
-        ),
-      };
+      return { chips: [], legend: legendFor([...rowsById.values()]) };
     },
 
     getStats() {

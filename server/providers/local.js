@@ -28,13 +28,19 @@ import { firePerimetersProxy } from './firePerimeters.js';
 import { gnssIntegrityProxy } from './gnssIntegrity.js';
 import { cycloneProxy } from './cyclones.js';
 import { windProxy } from './wind.js';
-import { disastersProxy, gbifTilesProxy } from './environment.js';
+import {
+  createDisasterFeed,
+  disastersProxy,
+  gbifTilesProxy,
+} from './environment.js';
+import { priorityProxy } from './priority.js';
 
 /**
  * Construct the local provider plugins in their established order.
  * `realtime` configures OpenAI; `gemini` explicitly opts into Gemini Live.
  */
 function localProviderPlugins({ realtime, gemini } = {}) {
+  const disasterFeed = createDisasterFeed();
   return [
     openSkyProxy(),
     celestrakProxy(),
@@ -65,7 +71,8 @@ function localProviderPlugins({ realtime, gemini } = {}) {
     mapillaryProxy(),
     firePerimetersProxy(),
     gnssIntegrityProxy(),
-    disastersProxy(),
+    disastersProxy({ feed: disasterFeed }),
+    priorityProxy({ feed: disasterFeed }),
     gbifTilesProxy(),
     keySetupEndpoint(),
   ];

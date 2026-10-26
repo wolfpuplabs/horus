@@ -3039,5 +3039,15 @@
   "Fauna habitat (GBIF)": "Ареалы фауны (GBIF)",
   "Environment": "Окружающая среда",
   "Mapped": "На карте",
-  "Fire hotspots (VIIRS)": "Очаги пожаров (VIIRS)"
+  "Fire hotspots (VIIRS)": "Очаги пожаров (VIIRS)",
+  "Critical": "Критический",
+  "Watch": "Наблюдение",
+  "Priority {score}/100 · {tier} · rank #{rank}": "Приоритет {score}/100 · {tier} · место № {rank}",
+  "Hazard {hazard} · biodiversity {biodiversity} · forest pressure {forest}": "Опасность {hazard} · биоразнообразие {biodiversity} · нагрузка на леса {forest}",
+  "{count} species records within 50 km (GBIF)": "{count} находок видов в радиусе 50 км (GBIF)",
+  "{share} of the area lost tree cover since 2001": "{share} территории потеряли лесной покров с 2001 года",
+  "Partial score: a factor could not be measured": "Неполная оценка: один фактор не удалось измерить",
+  "Heuristic triage, not an official priority": "Эвристическая сортировка, не официальный приоритет",
+  "Disasters ranked by hazard, nearby biodiversity and forest loss. Click a marker for the reasons.": "Бедствия ранжированы по опасности, биоразнообразию рядом и потере лесов. Нажмите на маркер, чтобы увидеть причины.",
+  "JEV priority": "Приоритет JEV"
 }

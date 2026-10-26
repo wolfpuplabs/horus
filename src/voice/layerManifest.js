@@ -260,6 +260,12 @@ const layers = [
     noQuery: 'map markers; ask GDACS/EONET event cards instead',
   },
   {
+    id: 'priority',
+    aliases: ['jev priority', 'priorities', 'triage', 'where to respond'],
+    context: false,
+    noQuery: 'ranked markers; read the card for the factors',
+  },
+  {
     id: 'hotspots',
     aliases: ['fire hotspots', 'hotspots', 'karhutla', 'viirs fires'],
     context: false,
@@ -561,6 +567,7 @@ const SELF_EVIDENT_IDS = new Set([
   'flora',
   'fauna',
   'hotspots',
+  'priority',
 ]);
 
 /**

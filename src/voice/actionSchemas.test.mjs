@@ -42,7 +42,7 @@ test('the complete Realtime tool payload pins the manifest-generated layer relea
     // Globe rotation adds one motion; visual keyhole fit and explicit
     // reset guidance/defaults update only move_camera and mode descriptions.
     // Restore base descriptions; append only globe-rotation defaults and fit guidance.
-    'aaea5a0668dea1bb7321a73a5fe4ee46b5464a84324a82e600314588b4812841',
+    '522e6f42573558461c8ce2ab02a9a41a03cdfaf1d1b819bbc7cdc282f5362dfa',
   );
 });
 

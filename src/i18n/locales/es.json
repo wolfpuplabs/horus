@@ -2972,5 +2972,15 @@
   "Fauna habitat (GBIF)": "Hábitat de fauna (GBIF)",
   "Environment": "Medio ambiente",
   "Mapped": "Mapeado",
-  "Fire hotspots (VIIRS)": "Focos de incendio (VIIRS)"
+  "Fire hotspots (VIIRS)": "Focos de incendio (VIIRS)",
+  "Critical": "Crítica",
+  "Watch": "Vigilar",
+  "Priority {score}/100 · {tier} · rank #{rank}": "Prioridad {score}/100 · {tier} · puesto n.º {rank}",
+  "Hazard {hazard} · biodiversity {biodiversity} · forest pressure {forest}": "Peligro {hazard} · biodiversidad {biodiversity} · presión forestal {forest}",
+  "{count} species records within 50 km (GBIF)": "{count} registros de especies en 50 km (GBIF)",
+  "{share} of the area lost tree cover since 2001": "El {share} del área perdió cobertura arbórea desde 2001",
+  "Partial score: a factor could not be measured": "Puntuación parcial: no se pudo medir un factor",
+  "Heuristic triage, not an official priority": "Clasificación heurística, no una prioridad oficial",
+  "Disasters ranked by hazard, nearby biodiversity and forest loss. Click a marker for the reasons.": "Desastres ordenados por peligro, biodiversidad cercana y pérdida forestal. Haz clic en un marcador para ver los motivos.",
+  "JEV priority": "Prioridad JEV"
 }

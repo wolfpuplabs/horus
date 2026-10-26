@@ -25,7 +25,10 @@ import { createApplicationAwareness } from './layers/militaryAwareness.js';
 import { createApplicationFirms } from './layers/firms.js';
 import { createApplicationEarthquakes } from './layers/earthquakes.js';
 import { createApplicationAirQuality } from './layers/airQuality.js';
-import { createApplicationNaturalDisasters } from './layers/disasters.js';
+import {
+  createApplicationNaturalDisasters,
+  createApplicationPriority,
+} from './layers/disasters.js';
 import {
   createFaunaHabitatLayer,
   createFireHotspotsLayer,
@@ -126,6 +129,7 @@ export function createApplicationCatalog({
           ...(resolveAsset ? { resolveAsset } : {}),
         }),
         createApplicationNaturalDisasters(),
+        createApplicationPriority(),
         createForestLossLayer(),
         createFireHotspotsLayer(),
         createFloraHabitatLayer(),

@@ -90,13 +90,16 @@ async function fetchGdacs(fetchImpl, nowMs) {
   return [...rows.values()];
 }
 
-/** Merge GDACS and EONET; one feed failing still answers with the other. */
-export function disastersProxy({
+/**
+ * The merged GDACS + EONET snapshot, cached and shared: /api/disasters and
+ * /api/priority read the same upstream fetch. One feed failing still answers
+ * with the other; a last good snapshot answers for a day while both fail.
+ */
+export function createDisasterFeed({
   fetchImpl = (...args) => globalThis.fetch(...args),
   now = () => Date.now(),
 } = {}) {
   const inFlight = new Map();
-  const allow = makeRateLimiter({ windowMs: 60_000, max: 30, globalMax: 600 });
   let cached = null;
 
   async function load() {
@@ -120,6 +123,35 @@ export function disastersProxy({
     };
   }
 
+  return {
+    /** True when a call would reach upstream rather than the cache. */
+    needsFetch: () =>
+      !cached || now() - cached.generatedAt >= DISASTER_CACHE_MS,
+    /** @returns {Promise<{ snapshot: object, stale: boolean }>} */
+    async get() {
+      if (cached && now() - cached.generatedAt < DISASTER_CACHE_MS)
+        return { snapshot: cached, stale: false };
+      try {
+        const { promise } = coalesceProxyRequest(inFlight, 'disasters', load);
+        cached = await promise;
+        return { snapshot: cached, stale: false };
+      } catch (error) {
+        if (cached && now() - cached.generatedAt < DISASTER_STALE_MS)
+          return { snapshot: cached, stale: true };
+        throw error;
+      }
+    },
+  };
+}
+
+/** Serve the merged disaster snapshot. */
+export function disastersProxy({
+  fetchImpl,
+  now,
+  feed = createDisasterFeed({ fetchImpl, now }),
+} = {}) {
+  const allow = makeRateLimiter({ windowMs: 60_000, max: 30, globalMax: 600 });
+
   async function handler(req, res) {
     const json = (status, value, extra = {}) => {
       if (res.destroyed) return;
@@ -137,17 +169,12 @@ export function disastersProxy({
     const path = (req.url || '/').split('?')[0];
     if (path !== '/' && path !== '')
       return json(404, { error: 'unknown_route' });
-    if (cached && now() - cached.generatedAt < DISASTER_CACHE_MS)
-      return json(200, cached);
+    if (feed.needsFetch() && !allow(clientKey(req)))
+      return json(429, { error: 'rate_limited' }, { 'Retry-After': '60' });
     try {
-      if (!inFlight.size && !allow(clientKey(req)))
-        return json(429, { error: 'rate_limited' }, { 'Retry-After': '60' });
-      const { promise } = coalesceProxyRequest(inFlight, 'disasters', load);
-      cached = await promise;
-      return json(200, cached);
+      const { snapshot, stale } = await feed.get();
+      return json(200, snapshot, stale ? { 'X-Data-Stale': 'true' } : {});
     } catch (error) {
-      if (cached && now() - cached.generatedAt < DISASTER_STALE_MS)
-        return json(200, cached, { 'X-Data-Stale': 'true' });
       console.warn('[disasters] feeds unavailable:', error?.message || error);
       return json(502, { error: 'Natural disaster feeds unavailable' });
     }

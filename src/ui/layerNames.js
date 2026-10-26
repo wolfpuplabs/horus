@@ -17,6 +17,7 @@ export const LAYER_NAME_KEYS = Object.freeze({
   military: msg('Military Flights'),
   earthquakes: msg('Earthquakes (24h)'),
   disasters: msg('Natural disasters'),
+  priority: msg('JEV priority'),
   deforestation: msg('Deforestation (2001–2025)'),
   hotspots: msg('Fire hotspots (VIIRS)'),
   flora: msg('Flora habitat (GBIF)'),

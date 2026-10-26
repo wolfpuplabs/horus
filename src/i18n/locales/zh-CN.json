@@ -2838,5 +2838,15 @@
   "Fauna habitat (GBIF)": "动物栖息地（GBIF）",
   "Environment": "环境",
   "Mapped": "已绘制",
-  "Fire hotspots (VIIRS)": "火点（VIIRS）"
+  "Fire hotspots (VIIRS)": "火点（VIIRS）",
+  "Critical": "严重",
+  "Watch": "关注",
+  "Priority {score}/100 · {tier} · rank #{rank}": "优先级 {score}/100 · {tier} · 第 {rank} 名",
+  "Hazard {hazard} · biodiversity {biodiversity} · forest pressure {forest}": "危险 {hazard} · 生物多样性 {biodiversity} · 森林压力 {forest}",
+  "{count} species records within 50 km (GBIF)": "50 公里内 {count} 条物种记录（GBIF）",
+  "{share} of the area lost tree cover since 2001": "该区域 {share} 自 2001 年以来失去树木覆盖",
+  "Partial score: a factor could not be measured": "部分得分：有一个因素无法测量",
+  "Heuristic triage, not an official priority": "启发式分级，非官方优先级",
+  "Disasters ranked by hazard, nearby biodiversity and forest loss. Click a marker for the reasons.": "按危险程度、附近生物多样性和森林损失排序的灾害。点击标记查看原因。",
+  "JEV priority": "JEV 优先级"
 }
