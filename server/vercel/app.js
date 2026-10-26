@@ -33,12 +33,26 @@ export function createApiApp() {
 /**
  * Restore the public path from a `/api/:path*` rewrite to the single function.
  * Vercel may hand the function either the original URL or the destination.
+ * @returns {string|null} null for a path that tries to climb out of /api.
  */
 export function restoreApiUrl(rawUrl) {
   const url = new URL(rawUrl || '/', 'http://localhost');
   const forwarded = url.searchParams.get('__gevpath');
   if (forwarded === null) return rawUrl;
+  if (forwarded.split('/').some((segment) => segment === '..')) return null;
   url.searchParams.delete('__gevpath');
   const search = url.searchParams.toString();
   return `/api/${forwarded.replace(/^\/+/, '')}${search ? `?${search}` : ''}`;
+}
+
+/**
+ * The visitor's address as Vercel reports it. Vercel overwrites `x-real-ip`
+ * with the connecting client, so it cannot be supplied by the caller; the
+ * marker string keeps a missing header from reading as loopback.
+ * @param {import('node:http').IncomingHttpHeaders} headers
+ * @returns {string}
+ */
+export function vercelClientAddress(headers = {}) {
+  const value = String(headers['x-real-ip'] || '').trim();
+  return value ? `vercel:${value}` : 'vercel:unknown';
 }

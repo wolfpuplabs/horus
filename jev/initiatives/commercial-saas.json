@@ -1,0 +1,38 @@
+{
+  "id": "commercial-saas",
+  "title": "Paid SaaS tier of Horus",
+  "owner": "wolfpuplabs",
+  "stage": "idea",
+  "summary": "Sell hosted Horus to companies.",
+  "costs": {
+    "buildHours": 300,
+    "infraUsdPerMonth": 150,
+    "maintenanceHoursPerMonth": 20
+  },
+  "outcomes": [
+    {
+      "id": "subscription-revenue",
+      "metric": "Subscription revenue",
+      "unit": "USD",
+      "quantityPerYear": 6000,
+      "proxyValuePerUnit": 1,
+      "confidence": 0.3,
+      "attribution": 1,
+      "deadweight": 0
+    }
+  ],
+  "risks": [
+    {
+      "id": "data-licences-forbid-commercial",
+      "title": "TeleGeography, Bhote Koshi imagery, OpenSky and some GBIF datasets forbid commercial use",
+      "likelihood": 5,
+      "impact": 5,
+      "blocking": true,
+      "mitigation": "Would need commercial licences or removing those layers first."
+    }
+  ],
+  "evidence": [
+    { "kind": "problem-statement", "ref": "docs/PRD.md" },
+    { "kind": "roi-estimate", "ref": "jev/initiatives/commercial-saas.json" }
+  ]
+}

@@ -1,0 +1,44 @@
+{
+  "id": "jev-priority-layer",
+  "title": "JEV priority layer: rank disasters by hazard x biodiversity x forest pressure",
+  "owner": "wolfpuplabs",
+  "stage": "build",
+  "summary": "Tell a partner which current disasters to look at first, instead of 400 equal markers.",
+  "costs": {
+    "buildHours": 16,
+    "infraUsdPerMonth": 2,
+    "maintenanceHoursPerMonth": 1,
+    "$comment": "GBIF count and tile reads are keyless; infra is the extra function time."
+  },
+  "outcomes": [
+    {
+      "id": "triage-minutes-saved",
+      "metric": "Hours of daily triage saved per partner analyst",
+      "unit": "hour",
+      "quantityPerYear": 480,
+      "proxyValuePerUnit": 12,
+      "confidence": 0.4,
+      "attribution": 0.7,
+      "deadweight": 0.2,
+      "$comment": "ASSUMPTION: 4 analysts x 10 h/month of manual ranking avoided."
+    }
+  ],
+  "risks": [
+    {
+      "id": "score-overtrust",
+      "title": "A heuristic score is read as an official priority",
+      "likelihood": 3,
+      "impact": 3,
+      "mitigation": "Card shows the three factors and says 'heuristic'; weights live in jev/priority.json."
+    }
+  ],
+  "evidence": [
+    { "kind": "problem-statement", "ref": "docs/PRD.md" },
+    {
+      "kind": "roi-estimate",
+      "ref": "jev/initiatives/jev-priority-layer.json"
+    },
+    { "kind": "prd", "ref": "docs/PRD.md" },
+    { "kind": "test-plan", "ref": "docs/SDLC.md" }
+  ]
+}

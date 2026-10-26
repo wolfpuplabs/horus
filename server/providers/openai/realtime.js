@@ -13,6 +13,7 @@ import {
   OPENAI_REALTIME_TRANSCRIBE_MODEL_DEFAULT,
 } from './constants.js';
 import { realtimeInstructions } from './instructions.js';
+import { peerAddress } from '../common/peer.js';
 import { GEV_REALTIME_TOOLS } from './tools.js';
 import {
   preferCodexOAuth,
@@ -23,7 +24,7 @@ import {
 const LOOPBACK_ADDRESSES = new Set(['127.0.0.1', '::1', '::ffff:127.0.0.1']);
 
 function isLoopbackRequest(req) {
-  return LOOPBACK_ADDRESSES.has(String(req.socket?.remoteAddress || ''));
+  return LOOPBACK_ADDRESSES.has(peerAddress(req));
 }
 
 function isSameOriginRequest(req) {
