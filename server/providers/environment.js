@@ -13,11 +13,24 @@ import { clientKey, makeRateLimiter } from './common/rate-limit.js';
 //   /api/disasters   GDACS + NASA EONET current natural disasters, merged.
 //   /api/gbif-tiles  GBIF occurrence-density map tiles for flora and fauna.
 
-// The map list returns at most 100 events, so each hazard type is asked for
-// on its own; floods and droughts would otherwise fall behind fire alerts.
+// The app list holds only the latest 100 events, so each hazard type is also
+// searched over the last 30 days; floods and droughts would otherwise fall
+// behind fire alerts.
+const GDACS_BASE = 'https://www.gdacs.org/gdacsapi/api/events/geteventlist';
 const GDACS_EVENT_TYPES = Object.freeze(['FL', 'DR', 'VO', 'TC', 'EQ', 'WF']);
-const gdacsUrl = (type) =>
-  `https://www.gdacs.org/gdacsapi/api/events/geteventlist/MAP?eventtypes=${type}`;
+const GDACS_SEARCH_DAYS = 30;
+const isoDay = (ms) => new Date(ms).toISOString().slice(0, 10);
+export function gdacsUrls(nowMs) {
+  const from = isoDay(nowMs - GDACS_SEARCH_DAYS * 86_400_000);
+  const to = isoDay(nowMs);
+  return [
+    `${GDACS_BASE}/EVENTS4APP`,
+    ...GDACS_EVENT_TYPES.map(
+      (type) =>
+        `${GDACS_BASE}/SEARCH?eventlist=${type}&fromDate=${from}&toDate=${to}&alertlevel=Green;Orange;Red`,
+    ),
+  ];
+}
 const EONET_URL =
   'https://eonet.gsfc.nasa.gov/api/v3/events?status=open&days=60';
 const USER_AGENT = 'horus-environment-proxy/1.0';
@@ -59,11 +72,11 @@ async function fetchFeed(fetchImpl, url, normalize) {
   return rows;
 }
 
-/** Every GDACS hazard type in parallel; succeeds when any type answers. */
-async function fetchGdacs(fetchImpl) {
+/** The app list and every per-type search in parallel; any answer counts. */
+async function fetchGdacs(fetchImpl, nowMs) {
   const results = await Promise.allSettled(
-    GDACS_EVENT_TYPES.map((type) =>
-      fetchFeed(fetchImpl, gdacsUrl(type), normalizeGdacsEvents),
+    gdacsUrls(nowMs).map((url) =>
+      fetchFeed(fetchImpl, url, normalizeGdacsEvents),
     ),
   );
   const answered = results.filter((result) => result.status === 'fulfilled');
@@ -85,7 +98,7 @@ export function disastersProxy({
 
   async function load() {
     const [gdacs, eonet] = await Promise.allSettled([
-      fetchGdacs(fetchImpl),
+      fetchGdacs(fetchImpl, now()),
       fetchFeed(fetchImpl, EONET_URL, normalizeEonetEvents),
     ]);
     const status = (result) =>
