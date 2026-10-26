@@ -42,6 +42,19 @@ Start with the included data sources, then add your own. Each layer is a separat
 
 ---
 
+## 🌳 Environment First
+
+Horus opens on Indonesia with the environment layers on. The **Environment**
+group leads the layer panel:
+
+- **🌳 Deforestation (2001–2025):** Global Forest Change tree-cover loss (Hansen/UMD/Google), draped on the globe.
+- **🌊 Natural disasters:** current floods, wildfires, cyclones, storms, volcanoes, droughts, landslides and earthquakes from GDACS and NASA EONET. Click a marker for its card and report link.
+- **🌿 Flora / 🐾 Fauna habitat:** where plants and animals have been recorded, as GBIF occurrence density.
+- **🔥 Fires:** NASA FIRMS active fires (free `FIRMS_MAP_KEY`) and fire perimeters, plus earthquakes and air quality.
+
+All of these are keyless except FIRMS. Flights, ships, satellites, cameras and
+the other layers are still there, further down the panel and off by default.
+
 ## 🎛️ What This Thing Does
 
 - **🛩️ Cockpit view:** Ride inside a tracked flight — the camera holds the terrain under you all the way down.
