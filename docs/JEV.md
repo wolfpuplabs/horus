@@ -73,7 +73,7 @@ CLI: `scripts/jev.mjs`.
 | --- | --- | --- |
 | SaaS komersial | NO-GO di **idea** | SROI 0,25×, risiko lisensi blocking (25). Tidak ada jam kerja terbuang. |
 | Bahasa Indonesia | NO-GO di **idea** | SROI 0,75× dengan asumsi saat ini → perlu bukti pengguna dulu (discovery). |
-| FIRMS key | GO di idea | Murah, tapi tahap build tertahan: FIRMS tidak bisa dijangkau dari Vercel (B-04) → diganti GIBS. |
+| FIRMS key | NO-GO di **idea** | SROI 5,93×, tapi risiko blocking terbuka: FIRMS tidak bisa dijangkau dari Vercel (B-04) → diganti GIBS. |
 | Peta 3D lazy-load | GO | Menghindari biaya kuota tanpa mengurangi manfaat. |
 
 ## 6. Batasan
