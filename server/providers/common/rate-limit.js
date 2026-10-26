@@ -1,4 +1,5 @@
 import { makeRateLimiter } from '../../../src/sources/rateLimit.js';
+import { peerAddress } from './peer.js';
 export { makeRateLimiter } from '../../../src/sources/rateLimit.js';
 
 /**
@@ -55,8 +56,9 @@ export function makeCostRateLimiter(envValue, defaultPerMin) {
  * Client key for rate limiting. Uses the real socket peer address only — we do
  * NOT trust X-Forwarded-For (client-controlled; a rotating value would mint fresh
  * quota and grow the limiter map). This is a localhost dev proxy, so the socket
- * address is the real client.
+ * address is the real client. On Vercel the entry stamps the platform's client
+ * address instead (see `peerAddress`).
  */
 export function clientKey(req) {
-  return String(req.socket?.remoteAddress || 'local');
+  return peerAddress(req) || 'local';
 }

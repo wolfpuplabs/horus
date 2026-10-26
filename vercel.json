@@ -25,8 +25,30 @@
   "functions": {
     "api/gev.js": {
       "maxDuration": 60,
-      "memory": 1024,
       "includeFiles": "{server,src,config,build}/**"
     }
-  }
+  },
+  "headers": [
+    {
+      "source": "/(.*)",
+      "headers": [
+        {
+          "key": "X-Content-Type-Options",
+          "value": "nosniff"
+        },
+        {
+          "key": "Referrer-Policy",
+          "value": "strict-origin-when-cross-origin"
+        },
+        {
+          "key": "Permissions-Policy",
+          "value": "camera=(), payment=(), usb=(), geolocation=(self), microphone=(self)"
+        },
+        {
+          "key": "Cross-Origin-Opener-Policy",
+          "value": "same-origin-allow-popups"
+        }
+      ]
+    }
+  ]
 }

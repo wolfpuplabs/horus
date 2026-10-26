@@ -1,0 +1,38 @@
+{
+  "id": "indonesian-locale",
+  "title": "Bahasa Indonesia interface",
+  "owner": "wolfpuplabs",
+  "stage": "idea",
+  "summary": "Translate ~2,700 interface strings so district officers and field staff can use Horus without English.",
+  "costs": {
+    "buildHours": 45,
+    "infraUsdPerMonth": 0,
+    "maintenanceHoursPerMonth": 2
+  },
+  "outcomes": [
+    {
+      "id": "non-english-users",
+      "metric": "Additional active Indonesian-speaking users per year",
+      "unit": "user",
+      "quantityPerYear": 40,
+      "proxyValuePerUnit": 60,
+      "confidence": 0.3,
+      "attribution": 0.8,
+      "deadweight": 0.2,
+      "$comment": "ASSUMPTION: value per retained user = training cost avoided."
+    }
+  ],
+  "risks": [
+    {
+      "id": "translation-drift",
+      "title": "New strings ship untranslated",
+      "likelihood": 3,
+      "impact": 2,
+      "mitigation": "npm run i18n already fails on an incomplete catalog."
+    }
+  ],
+  "evidence": [
+    { "kind": "problem-statement", "ref": "docs/PRD.md" },
+    { "kind": "roi-estimate", "ref": "jev/initiatives/indonesian-locale.json" }
+  ]
+}

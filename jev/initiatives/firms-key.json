@@ -1,0 +1,37 @@
+{
+  "id": "firms-key",
+  "title": "Enable NASA FIRMS active fires with a free MAP_KEY",
+  "owner": "wolfpuplabs",
+  "stage": "idea",
+  "summary": "Karhutla hotspots at 375 m within hours, instead of event-level fire markers only.",
+  "costs": {
+    "buildHours": 1,
+    "infraUsdPerMonth": 0,
+    "maintenanceHoursPerMonth": 0.25
+  },
+  "outcomes": [
+    {
+      "id": "fire-hotspots-reviewed",
+      "metric": "Fire hotspots a partner reviews within 24 h",
+      "unit": "hotspot",
+      "quantityPerYear": 300,
+      "proxyValuePerUnit": 10,
+      "confidence": 0.4,
+      "attribution": 0.5,
+      "deadweight": 0.5
+    }
+  ],
+  "risks": [
+    {
+      "id": "key-quota",
+      "title": "FIRMS key quota exhausted by public traffic",
+      "likelihood": 2,
+      "impact": 2,
+      "mitigation": "Server-side disk cache; one upstream read per cache window."
+    }
+  ],
+  "evidence": [
+    { "kind": "problem-statement", "ref": "docs/PRD.md" },
+    { "kind": "roi-estimate", "ref": "jev/initiatives/firms-key.json" }
+  ]
+}

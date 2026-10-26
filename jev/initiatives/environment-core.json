@@ -1,0 +1,88 @@
+{
+  "id": "environment-core",
+  "title": "Environment-first Horus (deforestation, disasters, flora/fauna)",
+  "owner": "wolfpuplabs",
+  "stage": "release",
+  "summary": "Make deforestation, natural disasters and habitat the default view for Indonesian NGOs and local government analysts.",
+  "costs": {
+    "buildHours": 60,
+    "oneOffUsd": 0,
+    "infraUsdPerMonth": 20,
+    "maintenanceHoursPerMonth": 3,
+    "$comment": "Vercel Pro is assumed because Hobby is non-commercial only; keyless feeds cost nothing."
+  },
+  "outcomes": [
+    {
+      "id": "analyst-hours-saved",
+      "metric": "Analyst hours no longer spent compiling forest-loss and disaster feeds by hand",
+      "unit": "hour",
+      "quantityPerYear": 960,
+      "proxyValuePerUnit": 12,
+      "confidence": 0.5,
+      "attribution": 0.6,
+      "deadweight": 0.3,
+      "$comment": "ASSUMPTION: 4 partner organisations x 20 h/month. Replace with partner time logs."
+    },
+    {
+      "id": "faster-response-decisions",
+      "metric": "Field response decisions taken on a disaster seen in Horus first",
+      "unit": "decision",
+      "quantityPerYear": 120,
+      "proxyValuePerUnit": 80,
+      "confidence": 0.3,
+      "attribution": 0.3,
+      "deadweight": 0.5,
+      "$comment": "ASSUMPTION: proxy value = coordination cost avoided per decision."
+    },
+    {
+      "id": "forest-alerts-reviewed",
+      "metric": "Forest-loss hotspots reviewed by a partner for follow-up",
+      "unit": "hotspot",
+      "quantityPerYear": 200,
+      "proxyValuePerUnit": 15,
+      "confidence": 0.4,
+      "attribution": 0.5,
+      "deadweight": 0.4,
+      "$comment": "ASSUMPTION: value of one desk review a partner would otherwise commission."
+    }
+  ],
+  "risks": [
+    {
+      "id": "upstream-feed-change",
+      "title": "GDACS / EONET / GBIF change or rate-limit their APIs",
+      "likelihood": 3,
+      "impact": 3,
+      "mitigation": "Merged feeds degrade per source; tests pin the normalizers; 24 h stale cache."
+    },
+    {
+      "id": "misread-as-authoritative",
+      "title": "Users act on tree-cover loss or occurrence density as if it were verified deforestation or habitat",
+      "likelihood": 3,
+      "impact": 4,
+      "mitigation": "Layer names, legend blurbs and README state the limits; PRD non-goal.",
+      "status": "mitigated"
+    },
+    {
+      "id": "shared-rate-limit-on-vercel",
+      "title": "All visitors shared one rate-limit key on Vercel",
+      "likelihood": 4,
+      "impact": 3,
+      "blocking": true,
+      "status": "mitigated",
+      "mitigation": "Fixed: api/gev.js keys clients by x-real-ip (docs/SECURITY-AUDIT.md F-01)."
+    }
+  ],
+  "evidence": [
+    { "kind": "problem-statement", "ref": "docs/PRD.md" },
+    { "kind": "roi-estimate", "ref": "jev/initiatives/environment-core.json" },
+    { "kind": "prd", "ref": "docs/PRD.md" },
+    { "kind": "tests", "ref": "src/layers/disasters/records.test.mjs" },
+    { "kind": "tests", "ref": "src/tooling/vercelGuardrails.test.mjs" },
+    { "kind": "security-audit", "ref": "docs/SECURITY-AUDIT.md" },
+    { "kind": "rollback-plan", "ref": "docs/SDLC.md" }
+  ],
+  "conditions": [
+    "Sign at least 2 partner organisations before month 3 and log their hours saved.",
+    "Promote to operate only with measured outcomes replacing the assumptions."
+  ]
+}

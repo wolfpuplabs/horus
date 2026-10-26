@@ -1,0 +1,67 @@
+{
+  "$comment": "JEV gate configuration. Money is USD. Proxy values and rates are assumptions; replace them with measured figures as they arrive (see docs/JEV.md).",
+  "currency": "USD",
+  "horizonMonths": 36,
+  "discountRateAnnual": 0.08,
+  "hourlyRateUsd": 15,
+  "ciBlockingStages": ["build", "release", "operate"],
+  "stages": {
+    "idea": {
+      "minSroiConditional": 1.0,
+      "minSroiGo": 2.0,
+      "maxRiskScore": 20,
+      "requiredEvidence": ["problem-statement", "roi-estimate"]
+    },
+    "discovery": {
+      "minSroiConditional": 1.2,
+      "minSroiGo": 2.0,
+      "maxRiskScore": 16,
+      "requiredEvidence": [
+        "problem-statement",
+        "roi-estimate",
+        "user-validation"
+      ]
+    },
+    "build": {
+      "minSroiConditional": 1.2,
+      "minSroiGo": 2.0,
+      "maxRiskScore": 16,
+      "maxPaybackMonths": 36,
+      "requiredEvidence": [
+        "problem-statement",
+        "roi-estimate",
+        "prd",
+        "test-plan"
+      ]
+    },
+    "release": {
+      "minSroiConditional": 1.2,
+      "minSroiGo": 2.0,
+      "maxRiskScore": 12,
+      "maxPaybackMonths": 36,
+      "requiredEvidence": [
+        "problem-statement",
+        "roi-estimate",
+        "prd",
+        "tests",
+        "security-audit",
+        "rollback-plan"
+      ]
+    },
+    "operate": {
+      "minSroiConditional": 1.0,
+      "minSroiGo": 2.0,
+      "maxRiskScore": 12,
+      "maxPaybackMonths": 36,
+      "requiredEvidence": [
+        "problem-statement",
+        "roi-estimate",
+        "prd",
+        "tests",
+        "security-audit",
+        "rollback-plan",
+        "outcome-measurement"
+      ]
+    }
+  }
+}
