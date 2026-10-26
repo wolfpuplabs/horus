@@ -202,8 +202,8 @@ function encode(state) {
 
 test('production registry is exact, canonical, and rejects incomplete contracts', async () => {
   assert.equal(validateLayerStateRegistry(), true);
-  assert.equal(REGISTERED_LAYER_IDS.length, 31);
-  assert.equal(new Set(REGISTERED_LAYER_IDS).size, 31);
+  assert.equal(REGISTERED_LAYER_IDS.length, 35);
+  assert.equal(new Set(REGISTERED_LAYER_IDS).size, 35);
   assert.ok(REGISTERED_LAYER_IDS.includes('transit'));
   assert.deepEqual(REGISTERED_LAYER_IDS, [...REGISTERED_LAYER_IDS].sort());
   assert.deepEqual(LEGACY_LAYER_STATE_TOKENS, {
@@ -242,20 +242,17 @@ test('production registry is exact, canonical, and rejects incomplete contracts'
   for (const [id, token] of Object.entries(LEGACY_LAYER_STATE_TOKENS)) {
     assert.equal(LAYER_STATE_TOKEN_RESERVATIONS[id], token);
   }
-  assert.equal(nextLayerStateToken(), '5');
+  assert.equal(nextLayerStateToken(), '9');
   assert.equal(
     nextLayerStateToken({
       ...LAYER_STATE_TOKEN_RESERVATIONS,
-      alpha: '5',
-      bravo: '6',
+      alpha: '9',
     }),
-    '7',
+    '00',
   );
   const digitsExhausted = {
     ...LAYER_STATE_TOKEN_RESERVATIONS,
-    ...Object.fromEntries(
-      [...'56789'].map((digit) => [`prior-${digit}`, digit]),
-    ),
+    ...Object.fromEntries([...'9'].map((digit) => [`prior-${digit}`, digit])),
   };
   assert.equal(nextLayerStateToken(digitsExhausted), '00');
   assert.equal(
@@ -307,8 +304,8 @@ test('production registry is exact, canonical, and rejects incomplete contracts'
   assert.equal(
     validateLayerStateAllocations(LAYER_STATE_TOKEN_RESERVATIONS, {
       ...LAYER_STATE_TOKEN_RESERVATIONS,
-      future: '5',
-      next: '6',
+      future: '9',
+      next: '00',
     }),
     true,
   );
@@ -316,9 +313,9 @@ test('production registry is exact, canonical, and rejects incomplete contracts'
     () =>
       validateLayerStateAllocations(LAYER_STATE_TOKEN_RESERVATIONS, {
         ...LAYER_STATE_TOKEN_RESERVATIONS,
-        future: '00',
+        future: '01',
       }),
-    /next free token 5/,
+    /next free token 9/,
   );
   const beforeLastDigit = { ...digitsExhausted };
   delete beforeLastDigit['prior-9'];
@@ -341,10 +338,10 @@ test('production registry is exact, canonical, and rejects incomplete contracts'
   assert.throws(
     () =>
       validateLayerStateAllocations(
-        { ...LAYER_STATE_TOKEN_RESERVATIONS, merged: '5' },
-        { ...LAYER_STATE_TOKEN_RESERVATIONS, merged: '5', competing: '5' },
+        { ...LAYER_STATE_TOKEN_RESERVATIONS, merged: '9' },
+        { ...LAYER_STATE_TOKEN_RESERVATIONS, merged: '9', competing: '9' },
       ),
-    /next free token 6/,
+    /next free token 00/,
   );
   assert.throws(
     () => validateLayerStateAllocations({ future: '00' }, { future: '01' }),
@@ -700,11 +697,13 @@ test('a fresh boot starts 3D aircraft ON in proximity — codec, both layers, an
     coordinator.getDurableState().options.flights.models3dMode,
     'proximity',
   );
-  assert.deepEqual(
-    paramsCalls,
-    [],
-    'a fresh boot restores nothing — which is exactly why the module initializers below must match',
-  );
+  // A fresh boot restores the startup environment layers, which pushes the
+  // codec's flight defaults into both fleets; they must be the same values
+  // the module initializers below start with.
+  for (const params of paramsCalls) {
+    assert.equal(params.models3d, true);
+    assert.equal(params.models3dMode, 'proximity');
+  }
   coordinator.destroy();
 
   // The other three surfaces, read from source, because each is the literal a

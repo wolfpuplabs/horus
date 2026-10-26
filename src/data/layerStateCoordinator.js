@@ -11,6 +11,7 @@ import {
   SHARE_TRACKING_RESTORE_POLICIES,
   cloneLayerState,
   createDefaultLayerState,
+  STARTUP_LAYER_IDS,
   isExplicitLayerStateOrigin,
   layerOptionsForRestore,
   normalizeLayerState,
@@ -126,6 +127,13 @@ export class LayerStateCoordinator {
       if (stored) {
         selected = stored;
         this._source = 'local';
+      } else {
+        // A first visit opens on the environment layers, restored the same
+        // passive way as saved preferences so nothing is written for it.
+        selected = normalizeLayerState({
+          enabledLayerIds: STARTUP_LAYER_IDS,
+        });
+        this._source = 'defaults';
       }
     } else {
       // A valid historical camera/style share with no v2 layer payload keeps

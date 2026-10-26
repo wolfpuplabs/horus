@@ -245,6 +245,45 @@ const layers = [
     noQuery: 'map overlay; no countable records',
   },
   {
+    id: 'disasters',
+    aliases: [
+      'natural disasters',
+      'disasters',
+      'floods',
+      'flooding',
+      'volcanoes',
+      'droughts',
+      'landslides',
+      'hazards',
+    ],
+    context: false,
+    noQuery: 'map markers; ask GDACS/EONET event cards instead',
+  },
+  {
+    id: 'deforestation',
+    aliases: [
+      'deforestation',
+      'forest loss',
+      'tree cover loss',
+      'logging',
+      'forest',
+    ],
+    context: false,
+    noQuery: 'map overlay; no countable records',
+  },
+  {
+    id: 'flora',
+    aliases: ['flora', 'plants', 'plant habitat', 'vegetation records'],
+    context: false,
+    noQuery: 'map overlay; no countable records',
+  },
+  {
+    id: 'fauna',
+    aliases: ['fauna', 'animals', 'wildlife', 'animal habitat'],
+    context: false,
+    noQuery: 'map overlay; no countable records',
+  },
+  {
     id: 'wind',
     aliases: ['winds', 'wind map'],
     context: false,
@@ -511,6 +550,10 @@ const SELF_EVIDENT_IDS = new Set([
   'radio',
   'wind',
   'directions',
+  'disasters',
+  'deforestation',
+  'flora',
+  'fauna',
 ]);
 
 /**

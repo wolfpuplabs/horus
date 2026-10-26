@@ -25,6 +25,12 @@ import { createApplicationAwareness } from './layers/militaryAwareness.js';
 import { createApplicationFirms } from './layers/firms.js';
 import { createApplicationEarthquakes } from './layers/earthquakes.js';
 import { createApplicationAirQuality } from './layers/airQuality.js';
+import { createApplicationNaturalDisasters } from './layers/disasters.js';
+import {
+  createFaunaHabitatLayer,
+  createFloraHabitatLayer,
+  createForestLossLayer,
+} from '../layers/environment/index.js';
 import { createApplicationFirePerimeters } from './layers/perimeters.js';
 import { createApplicationGnssIntegrity } from './layers/gnss.js';
 import { createApplicationCables } from './layers/submarineCables.js';
@@ -118,6 +124,10 @@ export function createApplicationCatalog({
           displayParams: () => flights.getParams(),
           ...(resolveAsset ? { resolveAsset } : {}),
         }),
+        createApplicationNaturalDisasters(),
+        createForestLossLayer(),
+        createFloraHabitatLayer(),
+        createFaunaHabitatLayer(),
         createApplicationEarthquakes({ source: sources.earthquakes }),
         createApplicationAirQuality({ source: sources['air-quality'] }),
         createApplicationFirePerimeters({

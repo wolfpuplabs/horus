@@ -616,36 +616,29 @@ test('Live Contacts and Space Missions go through the one setContextMode facade'
   }
 });
 
-test('Environmental enables BOTH its feeds and pulls out to the globe', async () => {
+test('Environmental enables its environment layers and pulls out to the globe', async () => {
   const spy = missionSpy();
   const outcome = await runFirstRunChoice('environmental', spy.deps);
   assert.equal(outcome.ok, true);
-  assert.deepEqual(spy.calls.layerIds, ['earthquakes', 'local-firms']);
+  assert.deepEqual(spy.calls.layerIds, [
+    'deforestation',
+    'disasters',
+    'earthquakes',
+  ]);
   assert.equal(spy.calls.globeFlights, 1);
 });
 
-test('the tile is the FULLY CONFIGURED experience: quakes and fires together', () => {
-  // Owner ruling, 2026-08-23: the launcher optimizes for the configured app, so
-  // ENVIRONMENTAL means live USGS earthquakes AND NASA FIRMS active fires.
+test('the tile opens keyless environment layers only', () => {
+  // Deforestation, current natural disasters and earthquakes all load without
+  // a provider key, so the tile works for every visitor; FIRMS stays a manual
+  // row in the Environment group until its key is configured.
   const environmental = FIRST_RUN_MISSIONS.environmental;
-  assert.deepEqual(environmental.layerIds, ['earthquakes', 'local-firms']);
-
-  // Keyless, the honest surface is the LAYER ROW ("KEY REQUIRED"), which the
-  // FIRMS layer already reports. The misleading part is the GLOBAL chip folding
-  // that row into LOAD FAILED — a defect in the shared state machine, ledgered
-  // post-launch, and the note must stay where the next editor will read it
-  // rather than being re-discovered as a launcher bug.
-  const module = fs.readFileSync(
-    new URL('./firstRunExperience.js', import.meta.url),
-    'utf8',
-  );
-  const table = module.slice(
-    module.indexOf('  environmental: Object.freeze({'),
-    module.indexOf('  explore:'),
-  );
-  assert.match(table, /KEY REQUIRED/);
-  assert.match(table, /src\/loadingFeedback\.js/);
-  assert.match(table, /LEDGERED post-launch/);
+  assert.deepEqual(environmental.layerIds, [
+    'deforestation',
+    'disasters',
+    'earthquakes',
+  ]);
+  assert.ok(!environmental.layerIds.includes('local-firms'));
 });
 
 test('every visitor gets the same tile — there is no degraded keyless variant', async () => {
@@ -656,7 +649,11 @@ test('every visitor gets the same tile — there is no degraded keyless variant'
   const outcome = await runFirstRunChoice('environmental', spy.deps);
   assert.equal(outcome.ok, true);
   assert.deepEqual(outcome.failedLayerIds, []);
-  assert.deepEqual(spy.calls.layerIds, ['earthquakes', 'local-firms']);
+  assert.deepEqual(spy.calls.layerIds, [
+    'deforestation',
+    'disasters',
+    'earthquakes',
+  ]);
   const module = fs.readFileSync(
     new URL('./firstRunExperience.js', import.meta.url),
     'utf8',
@@ -826,7 +823,8 @@ test('markup, startup ordering and accessibility remain pinned', () => {
     envTile.indexOf('<small>'),
     envTile.indexOf('</small>'),
   );
-  assert.match(visible, /earthquakes/i);
+  assert.match(visible, /deforestation/i);
+  assert.match(visible, /floods?/i);
   assert.match(
     visible,
     /fires?/i,
@@ -1053,10 +1051,10 @@ test('the voice TOOL SCHEMA matches the pinned contract — the mission mapping 
   // framing/default guidance updates only move_camera and mode descriptions.
   // Radio markup and the complete production-request comparison pin locality.
   // Restore the base camera/Globe View wording with the globe-rotation append.
-  assert.equal(block.length, 30851, 'serialized tool schema length drifted');
+  assert.equal(block.length, 30939, 'serialized tool schema length drifted');
   assert.equal(
     crypto.createHash('sha256').update(block).digest('hex'),
-    'd84603cb6e5bb6becba8ec29c30ee81eb89772590190bf3779ef069fdf3ca31e',
+    'b973151f4d70092dd2d678c91009a1a924e4b4788ff2bb7d02cabf729c649bad',
     'the first-run missions must ride EXISTING tools: no schema edit, no cache bust',
   );
   const instructions = fs.readFileSync(

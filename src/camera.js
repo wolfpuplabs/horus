@@ -34,3 +34,31 @@ export function flyToAustin(viewer) {
     if (!viewer.isDestroyed()) viewer.camera.cancelFlight();
   };
 }
+
+/**
+ * Open on the Indonesian archipelago: from orbit, ease down to a tilted view
+ * that keeps Sumatra to Papua in frame.
+ * @returns {Function} Cancels the pending or active startup flight.
+ */
+export function flyToIndonesia(viewer) {
+  viewer.camera.setView({
+    destination: Cesium.Cartesian3.fromDegrees(118, -2.5, 20_000_000),
+  });
+  const timer = setTimeout(() => {
+    if (viewer.isDestroyed()) return;
+    viewer.camera.flyTo({
+      destination: Cesium.Cartesian3.fromDegrees(118, -12, 4_800_000),
+      orientation: {
+        heading: 0,
+        pitch: Cesium.Math.toRadians(-70),
+        roll: 0,
+      },
+      duration: 4.0,
+      easingFunction: Cesium.EasingFunction.CUBIC_IN_OUT,
+    });
+  }, 500);
+  return () => {
+    clearTimeout(timer);
+    if (!viewer.isDestroyed()) viewer.camera.cancelFlight();
+  };
+}

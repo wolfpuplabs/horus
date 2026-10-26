@@ -151,6 +151,29 @@ export const DATA_CREDITS = [
     html: 'Earthquakes: Data courtesy of the U.S. Geological Survey',
   },
   {
+    key: 'gdacs',
+    html:
+      'Natural disasters: ' +
+      '<a href="https://www.gdacs.org" target="_blank" rel="noopener">GDACS</a> ' +
+      '(Global Disaster Alert and Coordination System, UN/EC JRC) · ' +
+      '<a href="https://eonet.gsfc.nasa.gov" target="_blank" rel="noopener">NASA EONET</a>',
+  },
+  {
+    key: 'hansen-gfc',
+    html:
+      'Deforestation: Hansen, M. C. et al. 2013, “High-Resolution Global Maps ' +
+      'of 21st-Century Forest Cover Change”, Science 342 · ' +
+      '<a href="https://glad.earthengine.app/view/global-forest-change" target="_blank" rel="noopener">Global Forest Change v1.13</a> ' +
+      '(UMD/Google/USGS/NASA, CC BY 4.0)',
+  },
+  {
+    key: 'gbif',
+    html:
+      'Flora &amp; fauna habitat: occurrence density from ' +
+      '<a href="https://www.gbif.org" target="_blank" rel="noopener">GBIF.org</a> ' +
+      '(CC BY 4.0)',
+  },
+  {
     key: 'nasa-gibs',
     html:
       'Recent imagery: We acknowledge the use of imagery provided by services from ' +

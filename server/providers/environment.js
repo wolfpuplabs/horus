@@ -13,8 +13,11 @@ import { clientKey, makeRateLimiter } from './common/rate-limit.js';
 //   /api/disasters   GDACS + NASA EONET current natural disasters, merged.
 //   /api/gbif-tiles  GBIF occurrence-density map tiles for flora and fauna.
 
-const GDACS_URL =
-  'https://www.gdacs.org/gdacsapi/api/events/geteventlist/MAP?eventtypes=EQ,TC,FL,VO,DR,WF';
+// Tried in order: the map list, then the list the GDACS app reads.
+const GDACS_URLS = Object.freeze([
+  'https://www.gdacs.org/gdacsapi/api/events/geteventlist/MAP?eventtypes=EQ;TC;FL;VO;DR;WF',
+  'https://www.gdacs.org/gdacsapi/api/events/geteventlist/EVENTS4APP',
+]);
 const EONET_URL =
   'https://eonet.gsfc.nasa.gov/api/v3/events?status=open&days=60';
 const USER_AGENT = 'horus-environment-proxy/1.0';
@@ -56,6 +59,18 @@ async function fetchFeed(fetchImpl, url, normalize) {
   return rows;
 }
 
+async function fetchFirstFeed(fetchImpl, urls, normalize) {
+  let lastError = null;
+  for (const url of urls) {
+    try {
+      return await fetchFeed(fetchImpl, url, normalize);
+    } catch (error) {
+      lastError = error;
+    }
+  }
+  throw lastError;
+}
+
 /** Merge GDACS and EONET; one feed failing still answers with the other. */
 export function disastersProxy({
   fetchImpl = (...args) => globalThis.fetch(...args),
@@ -67,7 +82,7 @@ export function disastersProxy({
 
   async function load() {
     const [gdacs, eonet] = await Promise.allSettled([
-      fetchFeed(fetchImpl, GDACS_URL, normalizeGdacsEvents),
+      fetchFirstFeed(fetchImpl, GDACS_URLS, normalizeGdacsEvents),
       fetchFeed(fetchImpl, EONET_URL, normalizeEonetEvents),
     ]);
     const status = (result) =>

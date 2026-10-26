@@ -39,6 +39,19 @@ function lifecycleStateLabel(lifecycleState) {
 // Presentation order is independent of catalog registration and startup order.
 const PANEL_GROUPS = [
   {
+    label: msg('Environment'),
+    ids: [
+      'deforestation',
+      'local-firms',
+      'fire-perimeters',
+      'disasters',
+      'flora',
+      'fauna',
+      'earthquakes',
+      'air-quality',
+    ],
+  },
+  {
     label: msg('Movement'),
     ids: [
       'satellites',
@@ -67,18 +80,11 @@ const PANEL_GROUPS = [
   },
   {
     label: msg('Events'),
-    ids: [
-      'rocket-launches',
-      'earthquakes',
-      'local-firms',
-      'fire-perimeters',
-      'gnss-integrity',
-    ],
+    ids: ['rocket-launches', 'gnss-integrity'],
   },
   {
     label: msg('Weather'),
     ids: [
-      'air-quality',
       'wind',
       'weather-radar',
       'weather-satellite',

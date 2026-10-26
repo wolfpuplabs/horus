@@ -106,20 +106,9 @@ export const FIRST_RUN_MISSIONS = Object.freeze({
   }),
   environmental: Object.freeze({
     kind: 'globe',
-    // Live USGS earthquakes AND NASA FIRMS active fires. The launcher optimizes
-    // for the FULLY CONFIGURED experience (owner ruling, 2026-08-23): the tile
-    // promises both, so it turns on both, and the subcopy in index.html says so.
-    //
-    // Keyless, FIRMS is honest where it counts — its own layer row reads
-    // "UNAVAILABLE · NASA FIRMS · LIVE · KEY REQUIRED", and the quakes half of
-    // the tile still delivers in full. What is NOT honest is the GLOBAL status
-    // chip, which has no key-required terminal state and folds that row into
-    // "LOAD FAILED". That aggregation is the defect, not this preset: fixing it
-    // means a KEY REQUIRED terminal state in src/loadingFeedback.js, a state
-    // machine shared by every layer and not a thing to refactor the night
-    // before a launch. LEDGERED post-launch. Until it lands, keyless visitors
-    // are judged on the layer row, which tells them the truth.
-    layerIds: Object.freeze(['earthquakes', 'local-firms']),
+    // Keyless environment layers: tree-cover loss, current natural
+    // disasters (GDACS + NASA EONET) and USGS earthquakes.
+    layerIds: Object.freeze(['deforestation', 'disasters', 'earthquakes']),
     busyKey: msg('Scanning active events…'),
   }),
   explore: Object.freeze({ kind: 'none' }),
@@ -367,7 +356,7 @@ export function initFirstRunExperience({
   );
   if (environmentalSub)
     environmentalSub.textContent = t(
-      'Live earthquakes and active fires, from USGS and NASA',
+      'Deforestation, floods, fires and other disasters, live',
     );
   const description = root.querySelector('#first-run-description');
   if (description)

@@ -597,8 +597,23 @@ export const LAYER_STATE_REGISTRY = Object.freeze([
     disposition: 'enabled+options',
     optionOwner: 'cctv',
   }),
+  Object.freeze({
+    id: 'deforestation',
+    token: '6',
+    disposition: 'enabled-only',
+  }),
   Object.freeze({ id: 'directions', token: 'n', disposition: 'enabled-only' }),
+  Object.freeze({
+    id: 'disasters',
+    token: '5',
+    disposition: 'enabled-only',
+  }),
   Object.freeze({ id: 'earthquakes', token: 'e', disposition: 'enabled-only' }),
+  Object.freeze({
+    id: 'fauna',
+    token: '8',
+    disposition: 'enabled-only',
+  }),
   Object.freeze({
     id: 'fire-perimeters',
     token: '2',
@@ -609,6 +624,11 @@ export const LAYER_STATE_REGISTRY = Object.freeze([
     token: 'f',
     disposition: 'enabled+options',
     optionOwner: 'flights',
+  }),
+  Object.freeze({
+    id: 'flora',
+    token: '7',
+    disposition: 'enabled-only',
   }),
   Object.freeze({
     id: 'gnss-integrity',
@@ -879,6 +899,9 @@ export function validateLayerStateRegistry(
 validateLayerStateRegistry();
 
 /** Produce the complete durable default state. */
+/** Layers a first visit (no share link, nothing saved) opens with. */
+export const STARTUP_LAYER_IDS = Object.freeze(['deforestation', 'disasters']);
+
 export function createDefaultLayerState() {
   return {
     version: LAYER_STATE_VERSION,
