@@ -41,6 +41,9 @@ export function restoreApiUrl(rawUrl) {
   if (forwarded === null) return rawUrl;
   if (forwarded.split('/').some((segment) => segment === '..')) return null;
   url.searchParams.delete('__gevpath');
+  // Vercel also appends the rewrite's named segment (`path`) to the query;
+  // routes with an exact query allowlist (weather) reject it as unknown.
+  url.searchParams.delete('path');
   const search = url.searchParams.toString();
   return `/api/${forwarded.replace(/^\/+/, '')}${search ? `?${search}` : ''}`;
 }

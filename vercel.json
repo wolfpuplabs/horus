@@ -25,7 +25,7 @@
   "functions": {
     "api/gev.js": {
       "maxDuration": 300,
-      "includeFiles": "{server,src,config,build}/**"
+      "includeFiles": "{server,src,config,build,node_modules/ws}/**"
     }
   },
   "headers": [

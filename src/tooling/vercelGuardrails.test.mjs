@@ -11,6 +11,12 @@ test('the rewrite restores /api paths and refuses climbing out of /api', () => {
     '/api/gbif-tiles/flora/1/0/0.png?q=1',
   );
   assert.equal(restoreApiUrl('/api/disasters'), '/api/disasters');
+  assert.equal(
+    restoreApiUrl(
+      '/api/gev?__gevpath=weather/manifest&product=radar&path=weather/manifest',
+    ),
+    '/api/weather/manifest?product=radar',
+  );
   assert.equal(restoreApiUrl('/api/gev?__gevpath=a/../setup/keys'), null);
 });
 
